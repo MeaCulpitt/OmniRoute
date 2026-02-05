@@ -1,4 +1,4 @@
-# OmniRoute Subnet: Miner Design Specification
+# OmniRoute Subnet: Miner Design
 
 ## 1. Miner Tasks
 The OmniRoute Miner is a high-performance forecasting node responsible for the following:
