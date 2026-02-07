@@ -8,15 +8,15 @@ Miners are incentivized to move beyond siloed data. To maximize competitive perf
 
 * **Atmospheric Intelligence:** Strategically querying weather subnets (e.g., SN18) to calculate the risk of flight-path safety or sea-state delays.
 * **Port-Side Visual Proofs:** Utilizing Vision AI subnets (e.g., SN44) to process satellite or terminal feeds for real-time verification of port congestion or yard density.
-* **Signal Synthesis:** Miners must determine which subnets provide them with the highest edge for a specific route. For example, a miner may prioritize port-side vision for a sea-freight challenge but pivot to weather intelligence for an air-freight request.
+* **Predictive Alpha Discovery:** Miners must determine which subnets provide the highest "Alpha" (predictive edge) for a specific route. For example, a miner may prioritize port-side vision for a sea-freight challenge but pivot to weather intelligence for an air-freight request to gain a scoring advantage over competitors.
 
 ### Task 2: Temporal Inference & Manifold Resolution
 Once the most relevant signals are ingested, the miner runs a local **Heuristic-Neural Hybrid model** to solve the multi-modal Traveling Salesman Problem (TSP). The miner generates a logistics manifold representing the optimal balance of speed, cost, and reliability across different transit legs (Air, Sea, Rail, Road).
 
 ### Task 3: Local Resilience & Graceful Degradation
 While the Validator governs the global emission state, the Miner is responsible for local stability and adaptation:
-* **Local Outage Detection:** Miners must implement timeout logic for all external queries. If a chosen signal source fails to respond within 100ms, the miner must immediately pivot to a "Safe Mode" optimization using local caches or secondary data to protect their Pool A Accuracy score.
-* **Redundant Sourcing:** Elite miners maintain "Hot Swaps" for data sources. If a primary Vision AI subnet is lagging, the miner should query a secondary verified source to maintain their Bridge Fidelity multiplier and avoid latency penalties.
+* **Local Outage Detection:** Miners must implement timeout logic for all external queries. If a chosen signal source fails to respond within 100ms, the miner must pivot to a "Safe Mode" optimization using local caches or secondary data to protect their Pool A Accuracy score.
+* **Redundant Sourcing:** Elite miners maintain "Hot Swaps" for data sources. If a primary signal source is lagging, the miner should query a secondary verified source to maintain their Bridge Fidelity multiplier and avoid latency penalties.
 
 ---
 
