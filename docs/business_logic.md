@@ -18,10 +18,10 @@ OmniRoute is an **Orchestrator Subnet**. Unlike subnets that produce a single da
 
 ---
 
-## 3. Why Bittensor? The Multi-Synapse Advantage
+* ## 3. Why Bittensor? The Multi-Synapse Advantage
 Logistics is a "Big Compute" problem requiring real-time synthesis of disparate data—a task perfectly suited for the Bittensor architecture.
 
-* **Incentivized Synthesis:** Through **Multi-Synapse Harmonic Scoring (MSHS)**, we reward miners for being "Polymaths" who bridge with other subnets, creating a superior intelligence product.
+* **Incentivized Synthesis:** Through **Multi-Synapse Harmonic Scoring (MSHS)**, we reward miners for their ability to identify and utilize the most effective signals from other subnets. This competitive selection process creates a superior **Global Logistics Intelligence** product that no single company could build alone.
 * **The dTAO Economic Flywheel:** OmniRoute leverages decentralized capital to fund the massive computational effort required to solve NP-hard logistics problems.
 
 ---
@@ -56,4 +56,4 @@ OmniRoute moves from protocol to commercial utility via a three-phase strategy:
 ---
 
 ## 6. Summary: Proof of Effort & Intelligence
-OmniRoute is a genuine **Proof of Intelligence**, requiring the synthesis of the entire Bittensor metagraph to solve real-world physical problems. It is a **Proof of Effort** because miners must maintain 200ms latency and multi-subnet connectivity to survive, creating an anti-fragile, high-performance global utility.
+OmniRoute is a genuine **Proof of Intelligence**, requiring the active synthesis of the Bittensor metagraph to solve real-world physical problems. It is a **Proof of Effort** because miners must maintain 200ms latency and constant data-source optimization to survive, creating an anti-fragile, high-performance global utility.
