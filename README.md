@@ -1,11 +1,11 @@
-# OmniRoute: The World Brain Logistics Layer 🌐📦
+# OmniRoute: The Global Logistics Intelligence Layer 🌐📦
 
-**OmniRoute** is a decentralized logistics intelligence (DLI) subnet built on **Bittensor**. It transforms global supply chain management from a reactive, siloed process into a proactive, "World Brain" optimization engine. By leveraging the 2026 **dTAO** architecture and **Multi-Synapse Harmonic Scoring (MSHS)**, OmniRoute incentivizes miners to synthesize real-time data from across the metagraph to solve the world’s most complex routing challenges.
+**OmniRoute** is a decentralized logistics intelligence (DLI) subnet built on **Bittensor**. It transforms global supply chain management from a reactive, siloed process into a proactive, high-fidelity optimization engine. By leveraging the 2026 **dTAO** architecture and **Multi-Synapse Harmonic Scoring (MSHS)**, OmniRoute incentivizes miners to synthesize real-time data from across the metagraph to solve the world’s most complex global logistics challenges.
 
 ---
 
 ## 🚀 Vision
-In a global economy plagued by fragmentation and "Black Swan" disruptions, OmniRoute provides a resilient, machine-speed settlement layer for logistics intelligence. We don't just find the shortest path; we find the **smartest** path by bridging the collective intelligence of the Bittensor network.
+In a global economy plagued by fragmentation and "Black Swan" disruptions, OmniRoute provides a resilient, machine-speed settlement layer for global logistics intelligence. We don't just find the shortest path; we find the **smartest** path by bridging the collective intelligence of the Bittensor network to ensure the continuous flow of goods.
 
 
 ---
@@ -26,7 +26,7 @@ Explore the technical and strategic foundations of the OmniRoute protocol:
 * **Oracle of Availability:** The validator's role in governing consensus-based outage detection and weight re-balancing.
 
 ### 4. [Business Logic & Market Rationale](./BUSINESS_LOGIC.md)
-* **The $180B Opportunity:** Why decentralized intelligence is the only solution for the global information gap.
+* **The $180B Opportunity:** Why decentralized intelligence is the only solution for the global logistics information gap.
 * **The Alpha Token Model:** How we shift logistics from a "Software Expense" to a yield-bearing "Capital Asset" for enterprises.
 
 ### 5. [Go-To-Market Strategy](./GTM_STRATEGY.md)
@@ -37,7 +37,7 @@ Explore the technical and strategic foundations of the OmniRoute protocol:
 
 ## 🛠️ Key Technical Features
 * **Multi-Synapse Harmonic Scoring (MSHS):** A 2026-native incentive model that rewards "Polymath" behavior and cross-subnet bridging (e.g., SN18, SN44).
-* **200ms Latency Target:** Built for the machine-speed economy, ensuring routing intelligence is delivered in real-time.
+* **200ms Latency Target:** Built for the machine-speed economy, ensuring logistics intelligence is delivered in real-time.
 * **Subnet Agnostic:** A modular design that can plug into any new data-providing subnet as the Bittensor ecosystem expands.
 
 ---
