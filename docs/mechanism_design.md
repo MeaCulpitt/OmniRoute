@@ -11,7 +11,7 @@ Rewards the **Optimization Intelligence** of the miner.
 ### Pool B: The Metagraph Bridge (20% Base Allocation)
 Rewards **Ecosystem Interoperability** by requiring miners to use peer subnets as their primary "truth sensors."
 * **Pluggable Source Examples:** * **Atmospheric Inputs:** Using outputs from **SN18 (Zeus)** or equivalent weather subnets for flight-path safety.
-    * **Visual Inputs:** Using **SN44 (Score)** to process real-time terminal feeds for port congestion and yard density.
+    * **Visual Inputs:** Using **SN44 (Score)** or equivalent Vision AI subnets to process real-time terminal feeds for port congestion and yard density.
 * **The Anti-Fragility & Availability Protocol:** To protect miner rewards, Pool B is subject to a dynamic waiver:
     * **Verified Outage:** If Validator consensus (>50%) determines a bridge-target is offline, the requirement is waived.
     * **Structural Gap:** If a challenge requires data for which no specialized subnet currently exists on Bittensor, the requirement is marked "Exempt."
