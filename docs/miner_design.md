@@ -8,7 +8,7 @@ Miners are incentivized to move beyond siloed data. To maximize competitive perf
 
 * **Atmospheric Intelligence:** Strategically querying weather subnets (e.g., SN18) to calculate the risk of flight-path safety or sea-state delays.
 * **Port-Side Visual Proofs:** Utilizing Vision AI subnets (e.g., SN44) to process satellite or terminal feeds for real-time verification of port congestion or yard density.
-* **Predictive Alpha Discovery:** Miners must determine which subnets provide the highest "Alpha" (predictive edge) for a specific route. For example, a miner may prioritize port-side vision for a sea-freight challenge but pivot to weather intelligence for an air-freight request to gain a scoring advantage over competitors.
+* **Predictive Edge Discovery:** Miners must determine which subnets provide them with the highest predictive edge for a specific route. For example, a miner may prioritize port-side vision for a sea-freight challenge but pivot to weather intelligence for an air-freight request to gain a scoring advantage over competitors.
 
 ### Task 2: Temporal Inference & Manifold Resolution
 Once the most relevant signals are ingested, the miner runs a local **Heuristic-Neural Hybrid model** to solve the multi-modal Traveling Salesman Problem (TSP). The miner generates a logistics manifold representing the optimal balance of speed, cost, and reliability across different transit legs (Air, Sea, Rail, Road).
