@@ -1,50 +1,218 @@
-# OmniRoute: The Global Logistics Intelligence Layer 🌐📦
+# OmniRoute: Multi-Modal Freight Routing for Bittensor
 
-**OmniRoute** is a decentralized logistics intelligence (DLI) subnet built on **Bittensor**. It transforms global supply chain management from a reactive, siloed process into a proactive, high-fidelity optimization engine. By leveraging the 2026 **dTAO** architecture and **Multi-Synapse Harmonic Scoring (MSHS)**, OmniRoute incentivizes miners to synthesize real-time data from across the metagraph to solve the world’s most complex global logistics challenges.
+OmniRoute optimizes freight routes across air, sea, rail, and road. Submit origin, destination, and constraints — receive a ranked set of route options with cost, time, and reliability estimates.
 
----
-
-## 🚀 Vision
-In a global economy plagued by fragmentation and "Black Swan" disruptions, OmniRoute provides a resilient, machine-speed settlement layer for global logistics intelligence. We don't just find the shortest path; we find the **smartest** path by bridging the collective intelligence of the Bittensor network to ensure the continuous flow of goods.
-
+Miners compete to find optimal routes. Validators verify using reproducible baselines and real-world data feeds.
 
 ---
 
-## 📂 Core Documentation
-Explore the technical and strategic foundations of the OmniRoute protocol:
+## The Problem
 
-### 1. [Incentive & Mechanism Design](./INCENTIVE_MECHANISM.md)
-* **The 80/20 Harmonic Split:** Learn how we reward raw optimization (Pool A) alongside ecosystem interoperability (Pool B).
-* **Anti-Fragility Protocol:** Deep dive into our dual-layer fallback system for technical outages and structural information gaps.
+Multi-modal freight routing is hard:
 
-### 2. [Miner Design: The DLI Node](./MINER_DESIGN.md)
-* **The DLI Pipeline:** Technical specifications for miners solving multi-modal TSP challenges.
-* **Local Adaptation:** How miners pivot during metagraph volatility to maintain 200ms latency and high accuracy.
+- **Combinatorial explosion.** LA to Hamburg could go sea-direct, air-to-hub, rail-across-Asia, or dozens of hybrid paths.
+- **Dynamic constraints.** Weather delays, port congestion, carrier availability, customs windows — all change daily.
+- **Fragmented data.** Shipping schedules, rail networks, and trucking rates live in separate systems.
+- **Expertise-gated.** Good routing requires domain knowledge most shippers don't have.
 
-### 3. [Validator Design: The Ground-Truth Authority](./VALIDATOR_DESIGN.md)
-* **MSHS Evaluation:** The mathematical framework for scoring miners based on Pareto Optimality and Bridge Fidelity.
-* **Oracle of Availability:** The validator's role in governing consensus-based outage detection and weight re-balancing.
-
-### 4. [Business Logic & Market Rationale](./BUSINESS_LOGIC.md)
-* **The $180B Opportunity:** Why decentralized intelligence is the only solution for the global logistics information gap.
-* **The Alpha Token Model:** How we shift logistics from a "Software Expense" to a yield-bearing "Capital Asset" for enterprises.
-
-### 5. [Go-To-Market Strategy](./GTM_STRATEGY.md)
-* **Early Adopters:** Our focus on High-Tech and Cold-Chain logistics.
-* **Bootstrapping the Metagraph:** Incentives for early miners and the "Free-to-Query" threshold for enterprise pilots.
+Current solutions are either expensive enterprise software (SAP, Oracle) or manual broker expertise.
 
 ---
 
-## 🛠️ Key Technical Features
-* **Multi-Synapse Harmonic Scoring (MSHS):** A 2026-native incentive model that rewards "Polymath" behavior and cross-subnet bridging (e.g., SN18, SN44).
-* **200ms Latency Target:** Built for the machine-speed economy, ensuring logistics intelligence is delivered in real-time.
-* **Subnet Agnostic:** A modular design that can plug into any new data-providing subnet as the Bittensor ecosystem expands.
+## How OmniRoute Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     OMNIROUTE PIPELINE                           │
+├─────────────────────────────────────────────────────────────────┤
+│  1. REQUEST         Origin, destination, cargo, constraints      │
+│                     "40ft container, Shanghai → Rotterdam,       │
+│                      arrive by March 15, minimize cost"          │
+├─────────────────────────────────────────────────────────────────┤
+│  2. DATA INGESTION  Miners pull schedules, weather, port status  │
+│                     Public APIs + Bittensor subnets where useful │
+├─────────────────────────────────────────────────────────────────┤
+│  3. OPTIMIZATION    Miners compute candidate routes              │
+│                     Balance cost, time, reliability, carbon      │
+├─────────────────────────────────────────────────────────────────┤
+│  4. SUBMISSION      Ranked route options with breakdowns         │
+│                     Each leg: carrier, schedule, estimated cost  │
+├─────────────────────────────────────────────────────────────────┤
+│  5. VALIDATION      Validators score against baseline + verify   │
+│                     data sources                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 🤝 Contributing & Community
-We are currently in the **Ideathon Phase**. We welcome developers, logistics experts, and Bittensor enthusiasts to join us in building the future of global trade.
+## Worked Example
+
+### Request
+
+```json
+{
+  "request_id": "req_7x9k2",
+  "origin": {"port": "CNSHA", "name": "Shanghai"},
+  "destination": {"port": "NLRTM", "name": "Rotterdam"},
+  "cargo": {"type": "container", "size": "40ft", "weight_kg": 18000},
+  "constraints": {
+    "arrive_by": "2026-03-15",
+    "priority": "cost",
+    "avoid": ["transhipment_colombo"]
+  }
+}
+```
+
+### Response
+
+```json
+{
+  "request_id": "req_7x9k2",
+  "routes": [
+    {
+      "rank": 1,
+      "legs": [
+        {"mode": "sea", "carrier": "Maersk", "vessel": "Madison Maersk", 
+         "depart": "CNSHA 2026-02-18", "arrive": "NLRTM 2026-03-08",
+         "route": "Shanghai → Singapore → Suez → Rotterdam"},
+        {"mode": "truck", "carrier": "Local drayage", 
+         "depart": "NLRTM 2026-03-08", "arrive": "Warehouse 2026-03-09"}
+      ],
+      "totals": {"days": 19, "cost_usd": 2850, "reliability": 0.94, "co2_kg": 890}
+    },
+    {
+      "rank": 2,
+      "legs": [
+        {"mode": "rail", "carrier": "China Railway Express",
+         "depart": "Shanghai 2026-02-20", "arrive": "Duisburg 2026-03-05"},
+        {"mode": "truck", "carrier": "DB Schenker",
+         "depart": "Duisburg 2026-03-05", "arrive": "Rotterdam 2026-03-06"}
+      ],
+      "totals": {"days": 14, "cost_usd": 4200, "reliability": 0.88, "co2_kg": 420}
+    },
+    {
+      "rank": 3,
+      "legs": [
+        {"mode": "air", "carrier": "Emirates SkyCargo",
+         "depart": "PVG 2026-02-16", "arrive": "AMS 2026-02-17"},
+        {"mode": "truck", "carrier": "Local",
+         "depart": "AMS 2026-02-17", "arrive": "Rotterdam 2026-02-17"}
+      ],
+      "totals": {"days": 2, "cost_usd": 12500, "reliability": 0.97, "co2_kg": 4200}
+    }
+  ],
+  "data_sources": {
+    "schedules": "MarineTraffic API (hash: 0x7a3f...)",
+    "weather": "SN18 Zeus (hash: 0x8b4e...)",
+    "port_congestion": "PortWatch public feed"
+  }
+}
+```
+
+**What the shipper gets:** Three options ranked by their stated priority (cost). Clear tradeoffs. Actionable.
 
 ---
 
-*“The shortest distance between two points is a straight line. The smartest distance is OmniRoute.”*
+## Data Sources
+
+OmniRoute uses a mix of public APIs and Bittensor subnets:
+
+| Data Type | Source | Notes |
+|-----------|--------|-------|
+| Vessel schedules | MarineTraffic, VesselFinder | Public/freemium APIs |
+| Port congestion | PortWatch, Xeneta | Delay estimates |
+| Weather/storms | SN18 (Zeus) or public APIs | Route risk assessment |
+| Rail schedules | Operator APIs (DB, CRCE) | Eurasian land bridge |
+| Air cargo | IATA, carrier APIs | Rates and availability |
+| Road/last-mile | Google Maps, HERE | Drayage estimates |
+
+**Bittensor integration is optional, not required.** Miners use whatever sources give them an edge. If SN18 provides better weather data than public APIs, miners will use it. Market forces, not mandates.
+
+---
+
+## Scoring
+
+Validators evaluate miner responses on:
+
+| Component | Weight | Measurement |
+|-----------|--------|-------------|
+| Feasibility | 30% | Routes are physically possible (schedules exist, connections work) |
+| Optimality | 25% | How close to Pareto frontier on cost/time/reliability |
+| Data freshness | 20% | Sources are current (not stale schedules) |
+| Constraint satisfaction | 15% | Meets stated requirements (arrive_by, avoid, etc.) |
+| Response time | 10% | Faster is better, within reason |
+
+### Verification Method
+
+Validators maintain their own baseline optimizer using the same public data sources. They:
+
+1. Run the same request through their baseline
+2. Verify miner's claimed schedules exist (spot-check against APIs)
+3. Score miner routes relative to baseline + feasibility checks
+
+This is **reproducible verification** — not subjective judgment.
+
+---
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Incentive Mechanism](./docs/mechanism_design.md) | Scoring formulas and emission logic |
+| [Miner Architecture](./docs/miner_design.md) | Data pipelines and optimization approaches |
+| [Validator Architecture](./docs/validator_design.md) | Verification methods and consensus |
+| [Business Rationale](./docs/business_logic.md) | Market opportunity and revenue model |
+| [Go-To-Market](./docs/go_to_market.md) | Target customers and growth strategy |
+
+---
+
+## For Shippers
+
+Query OmniRoute via API:
+
+```python
+from omniroute import Client
+
+client = Client(api_key="...")
+
+routes = client.optimize(
+    origin="CNSHA",
+    destination="NLRTM",
+    cargo={"type": "container", "size": "40ft"},
+    constraints={"arrive_by": "2026-03-15", "priority": "cost"}
+)
+
+print(routes[0].totals)  # {'days': 19, 'cost_usd': 2850, ...}
+```
+
+Pay per query. No staking required.
+
+---
+
+## For Miners
+
+Earn TAO by:
+1. Building effective route optimization engines
+2. Maintaining fresh data source integrations
+3. Responding quickly with feasible, high-quality routes
+
+Better routes = higher scores = more emissions.
+
+Hardware requirements are modest — this is data processing, not GPU compute.
+
+---
+
+## For Validators
+
+Earn dividends by:
+1. Running baseline optimization for comparison
+2. Verifying miner data sources
+3. Maintaining scoring consensus
+
+---
+
+## License
+
+MIT
+
+---
