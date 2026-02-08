@@ -1,50 +1,343 @@
-# OmniRoute Incentive & Mechanism Design: The World Brain Logistics Layer
+# OmniRoute: Incentive & Mechanism Design
 
-## 1. Emission and Reward Logic: Resilient Multi-Synapse Harmonic Scoring (MSHS)
-OmniRoute utilizes the 2026 Multiple Incentive Mechanism (Multi-IM) architecture to drive the transition from siloed computation to an interconnected "World Brain." Emissions are split into two harmonic pools with a dynamic fallback protector to ensure network stability regardless of external metagraph conditions.
-
-### Pool A: The Optimization Engine (80% Base Allocation)
-Rewards the **Optimization Intelligence** of the miner.
-* **Focus:** The quality and efficiency of the final logistics solution (Cost, Time, and Carbon impact).
-* **Validation:** Based on the mathematical optimality of the proposed route compared to the validator's baseline.
-
-### Pool B: The Metagraph Bridge (20% Base Allocation)
-Rewards **Ecosystem Interoperability** by requiring miners to use peer subnets as their primary "truth sensors."
-* **Pluggable Source Examples:** 
-    * **Atmospheric Inputs:** Using outputs from **SN18 (Zeus)** or equivalent weather subnets for flight-path safety.
-    * **Visual Inputs:** Using **SN44 (Score)** or equivalent subnets to process real-time terminal feeds for port congestion and yard density.
-* **The Anti-Fragility & Availability Protocol:** To protect miner rewards, Pool B is subject to a dynamic waiver:
-    * **Verified Outage:** If Validator consensus (>50%) determines a bridge-target is offline, the requirement is waived.
-    * **Structural Gap:** If a challenge requires data for which no specialized subnet currently exists on Bittensor, the requirement is marked "Exempt."
-    * **Re-Allocation:** In any "Exempt" or "Outage" state, the 20% weighting is automatically collapsed into Pool A.
+OmniRoute rewards miners for producing feasible, optimal freight routes. Validators verify using reproducible baselines and data source checks.
 
 ---
 
-## 2. Incentive Alignment for Miners and Validators
-* **Miners:** Incentivized to build **Metagraph-Native** solvers. They are rewarded for looking "inward" to other subnets for their data needs rather than relying on centralized legacy APIs. This creates buy-side pressure for the entire ecosystem.
-* **Validators:** Act as **Network Orchestrators**. They audit both the route optimality and the provenance of the data, ensuring miners are actually utilizing the peer-to-peer outputs of the metagraph.
+## Emission Logic
+
+Unlike subnets with fixed emission splits, OmniRoute uses a **single unified score**. All emissions flow to route quality — no artificial separation.
+
+### Scoring Components
+
+| Component | Weight | What It Measures |
+|-----------|--------|------------------|
+| Feasibility | 30% | Routes are physically executable |
+| Optimality | 25% | Proximity to cost/time/reliability frontier |
+| Data freshness | 20% | Sources are current, not stale |
+| Constraint satisfaction | 15% | Meets shipper requirements |
+| Response time | 10% | Faster responses, within deadline |
+
+**Total: 100%**
 
 ---
 
-## 3. Mechanisms to Discourage Low-Quality or Adversarial Behavior
-* **The Bridge Tax:** If a bridge-target is active and available but the miner fails to provide a "Proof-of-Query," they forfeit their Pool B multiplier, even if the route is technically sound.
-* **Anti-Oracle Spoofing:** Validators cross-reference miner inputs against the actual state of the bridge-target subnets. Discrepancies lead to immediate weight slashing.
-* **Logarithmic Complexity Buffer:** To prevent "spamming" of simple routes, complex multi-modal shipments (Air -> Sea -> Rail) are weighted significantly higher than single-leg transfers.
+## Scoring Formula
+
+```
+S_miner = (0.30 × feasibility) + 
+          (0.25 × optimality) + 
+          (0.20 × freshness) + 
+          (0.15 × constraints) + 
+          (0.10 × latency)
+```
+
+All components range 0.0 to 1.0.
+
+### Weight Setting
+
+```
+W_miner = S_miner / sum(all_miner_scores)
+emissions = W_miner × block_emissions
+```
 
 ---
 
-## 4. Proof of Intelligence and Proof of Effort
-* **Proof of Intelligence:** Requires the cognitive synthesis of disparate subnet outputs (Weather, Vision, Infrastructure) into a single, unified logistics resolution. Solving a global Traveling Salesman Problem (TSP) with dynamic, real-time constraints is an NP-hard challenge requiring sophisticated neural-heuristic hybrids.
-* **Proof of Effort:** Maintaining active, low-latency bridges to multiple shifting subnet sources requires constant infrastructure maintenance and computational "work." The MSHS 200ms latency requirement ensures miners must exert significant effort in hardware and connectivity optimization.
+## Component Details
+
+### 1. Feasibility (30%)
+
+**Question:** Can this route actually be executed?
+
+**Checks:**
+- Do the vessels/flights/trains exist?
+- Do the schedules align (no impossible connections)?
+- Are the ports/terminals operational?
+- Is the cargo type allowed on stated carriers?
+
+**Scoring:**
+```python
+def score_feasibility(route):
+    legs = route.legs
+    valid_legs = 0
+    
+    for leg in legs:
+        if verify_schedule_exists(leg):
+            if verify_connection_time(leg, next_leg) >= MIN_TRANSFER:
+                valid_legs += 1
+    
+    return valid_legs / len(legs)
+```
+
+**Binary failure:** If any leg is impossible, feasibility = 0.
+
+### 2. Optimality (25%)
+
+**Question:** How good is this route compared to what's possible?
+
+**Method:** Validators maintain a baseline optimizer. For each challenge, they compute their own Pareto frontier across cost, time, and reliability.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    PARETO FRONTIER                               │
+│                                                                  │
+│  Cost ($)                                                        │
+│    │                                                             │
+│    │    ★ Air (fast, expensive)                                 │
+│    │                                                             │
+│    │         ★ Rail (medium)                                    │
+│    │                                                             │
+│    │              ★ Sea (slow, cheap)                           │
+│    │                                                             │
+│    └──────────────────────────────────────────── Time (days)    │
+│                                                                  │
+│  Routes ON the frontier = optimal                                │
+│  Routes INSIDE = dominated (worse on all dimensions)            │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Scoring:**
+```python
+def score_optimality(miner_routes, baseline_frontier):
+    scores = []
+    
+    for route in miner_routes:
+        # Distance to nearest frontier point
+        distance = min_distance_to_frontier(route, baseline_frontier)
+        
+        # Normalize: on frontier = 1.0, far inside = 0.0
+        score = max(0, 1.0 - (distance / MAX_DISTANCE))
+        scores.append(score)
+    
+    return mean(scores)
+```
+
+**Key insight:** Miners don't need to match the validator's exact routes. They need to find routes that are *on or near* the efficiency frontier.
+
+### 3. Data Freshness (20%)
+
+**Question:** Is the miner using current data or stale caches?
+
+**Method:** Validators spot-check claimed data sources.
+
+```python
+def score_freshness(route, claimed_sources):
+    checks = []
+    
+    for source in sample(claimed_sources, k=3):
+        # Verify source was queried recently
+        if source.query_hash in recent_api_logs:
+            if source.timestamp > (now() - MAX_STALE_HOURS):
+                checks.append(1.0)
+            else:
+                checks.append(0.5)  # Stale but real
+        else:
+            checks.append(0.0)  # Fabricated
+    
+    return mean(checks)
+```
+
+**Stale data penalty:** Using week-old schedules when current ones exist.
+
+**Fabrication penalty:** Claiming data sources that weren't actually queried.
+
+### 4. Constraint Satisfaction (15%)
+
+**Question:** Does the route meet the shipper's requirements?
+
+**Checks:**
+- `arrive_by`: Does the route arrive before deadline?
+- `avoid`: Are excluded ports/carriers avoided?
+- `priority`: Is the ranking consistent with stated priority?
+- `cargo_type`: Are special requirements (reefer, hazmat) handled?
+
+**Scoring:**
+```python
+def score_constraints(route, constraints):
+    satisfied = 0
+    total = len(constraints)
+    
+    for constraint in constraints:
+        if constraint.type == "arrive_by":
+            if route.arrival_date <= constraint.value:
+                satisfied += 1
+        elif constraint.type == "avoid":
+            if constraint.value not in route.all_ports:
+                satisfied += 1
+        # ... etc
+    
+    return satisfied / total
+```
+
+**Hard vs soft:** Some constraints are binary (arrive_by), others are preferences (priority).
+
+### 5. Response Time (10%)
+
+**Question:** How quickly did the miner respond?
+
+**Scoring:**
+```python
+def score_latency(response_ms, deadline_ms):
+    if response_ms > deadline_ms:
+        return 0.0  # Late = zero
+    
+    # Linear scale: faster is better
+    return 1.0 - (response_ms / deadline_ms)
+```
+
+**Deadline:** Challenges specify a response window (e.g., 30 seconds for complex routes, 5 seconds for simple).
+
+**Why only 10%:** Speed matters but quality matters more. Don't incentivize garbage-fast responses.
 
 ---
 
-## 5. High-Level Algorithm: The Resilient MSHS Pipeline
-1.  **Task Assignment:** Validators broadcast a **Logistics Challenge** containing multi-modal shipment parameters and constraints.
-2.  **Availability Pulse:** Validators identify currently active peer subnets and check for any **Structural Gaps** or **Outages** to set the epoch's reward weighting.
-3.  **Metagraph Resolution (Miner):** Miners fetch real-time outputs from identified bridge-targets (e.g., SN18, SN44) to inform the optimization engine.
-4.  **Submission:** Miners submit the optimized route (Pool A) + the cryptographic **Inter-Subnet Proofs** (Pool B).
-5.  **Validation:**
-    * **Step 1:** Validator checks route optimality and feasibility.
-    * **Step 2:** Validator verifies the "Bridge Proofs" against the peer subnets (unless the Availability Pulse triggered a waiver).
-6.  **Scoring & Allocation:** Rewards are distributed via Yuma Consensus based on the 80/20 harmonic split (or 100/0 in Degraded/Exempt states).
+## Worked Example
+
+### Challenge
+
+```json
+{
+  "origin": "CNSHA",
+  "destination": "NLRTM",
+  "cargo": {"type": "container", "size": "40ft"},
+  "constraints": {"arrive_by": "2026-03-15", "priority": "cost"},
+  "deadline_ms": 30000
+}
+```
+
+### Miner Response
+
+Returns 3 routes: sea (cheapest), rail, air.
+
+### Validator Evaluation
+
+| Component | Score | Notes |
+|-----------|-------|-------|
+| Feasibility | 1.0 | All schedules verified, connections valid |
+| Optimality | 0.9 | Sea route matches frontier; rail slightly dominated |
+| Freshness | 0.85 | 2/3 sources current; 1 source 3 days old |
+| Constraints | 1.0 | All routes arrive before deadline, ranked by cost |
+| Latency | 0.7 | Responded in 9 seconds (deadline was 30) |
+
+**Total Score:**
+```
+S = (0.30 × 1.0) + (0.25 × 0.9) + (0.20 × 0.85) + (0.15 × 1.0) + (0.10 × 0.7)
+  = 0.30 + 0.225 + 0.17 + 0.15 + 0.07
+  = 0.915
+```
+
+Strong performance. This miner earns proportional emissions.
+
+---
+
+## Anti-Gaming Mechanisms
+
+### Schedule Fabrication
+
+**Attack:** Claim vessels/routes that don't exist.
+
+**Defense:** Feasibility check against public schedule APIs. Fabricated schedules = 0 feasibility = near-zero score.
+
+### Data Source Spoofing
+
+**Attack:** Claim to use fresh data while using stale caches.
+
+**Defense:** Validators sample-check claimed sources. Spoofing = 0 freshness score.
+
+### Frontier Gaming
+
+**Attack:** Submit routes just outside the validator's frontier to appear optimal.
+
+**Defense:** Validators use multiple baseline algorithms. Gaming one baseline won't game all.
+
+### Latency Spam
+
+**Attack:** Respond instantly with low-quality routes to capture latency bonus.
+
+**Defense:** Latency is only 10% of score. Bad routes lose 90%.
+
+### Constraint Cheating
+
+**Attack:** Ignore constraints to find "better" routes.
+
+**Defense:** Constraint satisfaction is binary for hard constraints. Miss arrive_by = 0 on that component.
+
+---
+
+## Challenge Generation
+
+### Synthetic Challenges
+
+Pre-built routes for consistent benchmarking:
+
+```python
+SYNTHETIC_ROUTES = [
+    {"origin": "CNSHA", "destination": "NLRTM", "difficulty": "standard"},
+    {"origin": "USLA", "destination": "JPYOK", "difficulty": "transpacific"},
+    {"origin": "BRSSZ", "destination": "DEHAM", "difficulty": "southern_hemisphere"},
+    # Multi-modal emphasis
+    {"origin": "CNXAN", "destination": "PLGDN", "mode_hint": "rail", "difficulty": "eurasian_land"},
+]
+
+def generate_synthetic():
+    template = random.choice(SYNTHETIC_ROUTES)
+    constraints = random_constraints(template.difficulty)
+    return Challenge(
+        origin=template.origin,
+        destination=template.destination,
+        constraints=constraints
+    )
+```
+
+### Organic Challenges
+
+Real shipper queries routed through the network:
+
+```python
+async def handle_shipper_request(request):
+    challenge = Challenge.from_request(request)
+    
+    responses = await broadcast_to_miners(challenge)
+    scored = [(r, score(r)) for r in responses]
+    best = max(scored, key=lambda x: x[1])
+    
+    await deliver_to_shipper(request.shipper_id, best[0])
+    return scored
+```
+
+---
+
+## Validator Economics
+
+### Baseline Maintenance
+
+Validators must maintain:
+- Schedule API integrations (MarineTraffic, VesselFinder, etc.)
+- Baseline route optimizer
+- Data freshness verification logic
+
+**Cost:** API subscriptions + compute for optimization.
+
+**Revenue:** Validator dividends from emissions.
+
+### Consensus
+
+Most scoring is deterministic:
+- Feasibility: schedules exist or they don't
+- Constraints: met or not
+- Latency: timestamps
+
+Optimality requires baseline agreement. Validators who deviate significantly see V-Trust decay.
+
+---
+
+## Cadence
+
+| Event | Frequency |
+|-------|-----------|
+| Challenge broadcast | Every 50 blocks (~10 min) |
+| Response deadline | 30 seconds (standard), 60 seconds (complex) |
+| Scoring | Immediately after deadline |
+| Weight commitment | Every 360 blocks (~1 hr) |
+
+---
