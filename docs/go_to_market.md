@@ -1,43 +1,323 @@
 # OmniRoute: Go-To-Market Strategy
 
-## 1. Initial Target Users & Use Cases
-OmniRoute will initially target high-value, high-volatility segments where the cost of disruption far outweighs the cost of routing intelligence.
-
-### Anchor Use Cases:
-* **High-Tech Manufacturing:** Providing semiconductor and electronics firms with "Priority Rerouting" to bypass geopolitical or infrastructural bottlenecks in real-time.
-* **Cold-Chain Logistics:** Integrating with temperature-sensitive pharmaceutical and high-end produce supply chains. Here, the "Bridge" to Vision AI (SN44) for terminal monitoring is a critical competitive advantage.
-* **Digital Freight Forwarders:** Partnering with "born-digital" forwarders (e.g., Flexport or Sennder) who require high-velocity optimization to compete with legacy incumbents.
-
-### Pilot Partners:
-* **Tier-1 Validators:** Recruiting validators with existing relationships in the logistics and cloud-compute sectors to provide the initial staking floor.
-* **Independent Carriers:** Onboarding mid-sized fleet operators to provide "Local Truth" data as miners, validating the Decentralized Logistics Intelligence (DLI) engine.
+OmniRoute launches as a B2B API for freight route optimization. The GTM strategy targets freight forwarders first (they have routing needs and technical capability), then expands to direct shippers.
 
 ---
 
-## 2. Distribution & Growth Channels
-The strategy employs a "Side-by-Side" integration model to lower the barrier to entry for traditional enterprises.
+## Phase 1: Freight Forwarder Pilots (Months 1-3)
 
-### API Connectors & Middleware:
-* **The "SAP/Oracle Connector":** Developing lightweight plug-ins that allow enterprise ERP systems to query OmniRoute as a secondary optimization layer without migrating their entire stack.
-* **Open Source SDKs:** Providing "One-Click Miner" and "One-Click Validator" templates to lower the technical hurdle for participating in the metagraph.
+### Why Forwarders First
 
-### Strategic Alliances:
-* **Metagraph Synergy:** Forming "Bridge Alliances" with established subnets (e.g., SN18, SN44). By becoming a primary consumer of their data, OmniRoute gains immediate visibility within the existing Bittensor community.
-* **Logistics Tech Incubators:** Partnering with industry-specific accelerators to introduce OmniRoute to supply chain innovation teams at Fortune 500 companies.
+| Segment | Routing Volume | Technical Capability | Decision Speed |
+|---------|----------------|----------------------|----------------|
+| Freight forwarders | High (route daily) | Have dev teams | Fast |
+| Mid-size shippers | Medium | Limited tech | Medium |
+| Enterprise shippers | High | Complex procurement | Slow |
+
+Forwarders are ideal first customers:
+- They optimize routes constantly
+- They have API integration capability
+- They can measure value immediately
+- Successful forwarders become distribution channel to their shipper clients
+
+### Target Profile
+
+**Ideal early customer:**
+- 10-50 employees
+- 500-5,000 shipments/year
+- No enterprise TMS
+- Tech-forward (uses digital tools)
+- Focus on specific corridors (Asia-Europe, Transpacific)
+
+**Examples:** Niche digital forwarders, regional specialists, new market entrants.
+
+### Outreach Strategy
+
+**Direct contact:**
+- LinkedIn outreach to operations leads
+- Freight industry Slack/Discord communities
+- Trade publication coverage (FreightWaves, The Loadstar)
+
+**Value proposition:**
+> "Route optimization that used to require enterprise software. Pay per query. No contracts."
+
+### Pilot Structure
+
+| Element | Details |
+|---------|---------|
+| Duration | 30 days |
+| Queries | 100 free |
+| Support | Direct Slack channel |
+| Success metric | Used 50+ queries, positive feedback |
+
+### Phase 1 Goals
+
+- 10 forwarder pilots
+- 5 convert to paying
+- Testimonials for marketing
 
 ---
 
-## 3. Incentives for Early Participation
-Bootstrapping a two-sided marketplace (Miners vs. Users) requires a phased incentive structure.
+## Phase 2: API Launch & Pricing (Months 3-6)
 
-### For Miners (The Supply Side):
-* **Alpha Multipliers:** During the first 100 epochs, miners who successfully integrate multiple bridge targets (SN18, SN44, etc.) will receive a "Polymath Bonus" on their emissions to subsidize the initial infrastructure cost.
-* **Hardware Grants:** Partnering with compute-heavy validators to provide discounted GPU/CPU resources to top-performing logistics miners.
+### Public API
 
-### For Validators (The Security Side):
-* **Early-Bird Staking Yields:** Offering a simplified staking UI and prioritized "Alpha Yield" distributions for validators who commit to the initial launch tempo.
-* **Governance Rights:** Early validators will have a primary voice in defining the initial "Exempt" vs. "Active" bridge-target list.
+```
+POST api.omniroute.io/v1/optimize
+Authorization: Bearer {api_key}
 
-### For Users (The Demand Side):
-* **The "Zero-Fee" Beta:** Initial pilot partners receive a designated Alpha-token grant, allowing them to query the network for free during the first 30 days of production.
-* **Referral Rebates:** Users who refer new shippers to the network receive a rebate on their query fees paid in Alpha tokens, creating a viral growth loop.
+{
+  "origin": "CNSHA",
+  "destination": "NLRTM",
+  "cargo": {"type": "container", "size": "40ft"},
+  "constraints": {"arrive_by": "2026-03-15", "priority": "cost"}
+}
+```
+
+Response: Ranked route options with cost/time/reliability.
+
+### Pricing
+
+| Tier | Price | Included |
+|------|-------|----------|
+| Free | $0 | 10 queries/month, rate-limited |
+| Starter | $49/month | 100 queries |
+| Professional | $199/month | 500 queries |
+| Business | $499/month | 2,000 queries |
+| Enterprise | Custom | Unlimited, SLA, support |
+
+**Pay-as-you-go:** $1.50/query after plan limit.
+
+### Payment
+
+- Fiat (Stripe): Credit card, invoicing for enterprise
+- Crypto (optional): TAO, USDC at 10% discount
+
+**No staking required.** Crypto-native pricing creates adoption friction. Offer it as a discount, not a requirement.
+
+### Phase 2 Goals
+
+- 50 paying customers
+- $10K MRR
+- <5% churn
+
+---
+
+## Phase 3: Corridor Specialization (Months 6-9)
+
+### Focus Corridors
+
+Miners naturally specialize. Market this:
+
+| Corridor | Volume | Specialization Value |
+|----------|--------|----------------------|
+| China → Europe | Highest | Rail vs sea tradeoffs, Suez alternatives |
+| Transpacific | High | West Coast port congestion, schedule reliability |
+| Intra-Asia | Growing | Transshipment optimization |
+| South America → Asia | Underserved | Limited direct options, complex routing |
+
+### Corridor Landing Pages
+
+```
+omniroute.io/asia-europe
+omniroute.io/transpacific
+omniroute.io/intra-asia
+```
+
+Each page:
+- Corridor-specific worked examples
+- Current conditions (port delays, schedule changes)
+- Testimonials from corridor specialists
+
+### Miner Incentives
+
+Bonus emissions for underserved corridors:
+- South America routes: 1.2x multiplier
+- Africa routes: 1.3x multiplier
+- New corridor coverage: Discovery bonus
+
+---
+
+## Phase 4: Platform Integrations (Months 9-12)
+
+### Target Platforms
+
+| Platform Type | Examples | Integration Value |
+|---------------|----------|-------------------|
+| TMS (mid-market) | Cargowise, Descartes | Embedded optimization |
+| Freight marketplaces | Freightos, Shifl | Route suggestions |
+| Visibility platforms | Project44, FourKites | Predictive routing |
+
+### Integration Model
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    PLATFORM INTEGRATION                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  PLATFORM           OMNIROUTE            SHIPPER                 │
+│     │                   │                    │                   │
+│     │── Request ───────▶│                    │                   │
+│     │                   │── Optimize ───────▶│                   │
+│     │◀── Routes ────────│                    │                   │
+│     │                   │                    │                   │
+│     │─────────── Display in platform UI ────▶│                   │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Revenue share:** Platform pays wholesale ($0.75/query), marks up to users.
+
+### Phase 4 Goals
+
+- 2-3 platform integrations
+- 50% of queries via platforms
+- $50K MRR
+
+---
+
+## Marketing Channels
+
+### Content Marketing
+
+| Content Type | Frequency | Purpose |
+|--------------|-----------|---------|
+| Route corridor reports | Monthly | SEO, thought leadership |
+| Disruption alerts | As needed | Relevance, email list |
+| Case studies | Quarterly | Social proof |
+| API tutorials | Ongoing | Developer adoption |
+
+**Example content:**
+- "Shanghai-Rotterdam: Rail vs Sea in Q1 2026"
+- "Suez Congestion: Alternative Routes Analysis"
+- "How [Forwarder] Cut Transit Time 3 Days with OmniRoute"
+
+### Industry Presence
+
+| Channel | Approach |
+|---------|----------|
+| FreightWaves | Guest articles, podcast |
+| The Loadstar | News coverage |
+| LinkedIn | Operations/logistics audience |
+| Freight conferences | Sponsor small events initially |
+
+### Developer Marketing
+
+| Channel | Approach |
+|---------|----------|
+| GitHub | Open-source SDK, examples |
+| Dev.to / Medium | Technical tutorials |
+| Hacker News | Launch announcement |
+| API directories | RapidAPI, ProgrammableWeb |
+
+---
+
+## Sales Process
+
+### Self-Serve (Starter/Professional)
+
+1. Sign up on website
+2. Get API key
+3. Free tier (10 queries)
+4. Upgrade when ready
+
+**Conversion funnel:**
+- Landing page → Sign up: 5%
+- Sign up → First query: 60%
+- First query → Paid: 20%
+
+### Sales-Assisted (Business/Enterprise)
+
+1. Demo request form
+2. 30-minute call
+3. Pilot (100 free queries)
+4. Contract negotiation
+5. Onboarding
+
+**Target:** Companies with 500+ shipments/year.
+
+---
+
+## Competitive Positioning
+
+### Message
+
+**For freight forwarders:**
+> "Optimize every shipment without enterprise software costs. API-first route intelligence."
+
+**For shippers:**
+> "Know your options before you book. Real-time multi-modal route comparison."
+
+**For platforms:**
+> "Add route optimization to your product. White-label API, revenue share."
+
+### Differentiation
+
+| Competitor Says | OmniRoute Says |
+|-----------------|----------------|
+| "Enterprise-grade TMS" | "Pay per query, no contracts" |
+| "Full-service forwarding" | "Just the intelligence—use any forwarder" |
+| "AI-powered optimization" | "Competing algorithms, verifiable quality" |
+
+---
+
+## Success Metrics
+
+### Phase 1 (Months 1-3)
+
+| Metric | Target |
+|--------|--------|
+| Pilot customers | 10 |
+| Queries processed | 1,000 |
+| Pilot → paid conversion | 50% |
+
+### Phase 2 (Months 3-6)
+
+| Metric | Target |
+|--------|--------|
+| Paying customers | 50 |
+| MRR | $10K |
+| Queries/month | 5,000 |
+
+### Phase 3 (Months 6-9)
+
+| Metric | Target |
+|--------|--------|
+| Paying customers | 150 |
+| MRR | $30K |
+| Corridor coverage | 10 major lanes |
+
+### Phase 4 (Months 9-12)
+
+| Metric | Target |
+|--------|--------|
+| Platform integrations | 3 |
+| MRR | $50K |
+| Queries/month | 50,000 |
+
+---
+
+## Risks & Mitigations
+
+| Risk | Mitigation |
+|------|------------|
+| Low initial query quality | Extensive pilot testing before public launch |
+| Slow forwarder adoption | Generous free tier, direct sales support |
+| Platform integration delays | Prioritize self-serve growth in parallel |
+| Price sensitivity | Demonstrate ROI clearly (savings > cost) |
+
+---
+
+## Summary
+
+**Months 1-3:** Freight forwarder pilots. Prove quality. Get testimonials.
+
+**Months 3-6:** Public API launch. Self-serve pricing. First revenue.
+
+**Months 6-9:** Corridor specialization. Content marketing. Scale customers.
+
+**Months 9-12:** Platform integrations. Revenue share. Distribution leverage.
+
+Start narrow (forwarders), prove value, expand.
+
+---
