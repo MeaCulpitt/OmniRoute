@@ -8,14 +8,28 @@
 
 | Component | Weight | What It Measures |
 |-----------|--------|------------------|
-| Feasibility | 35% | Routes are physically executable |
-| Quality | 45% | How close to validator's baseline |
+| Feasibility | 30% | Routes are physically executable |
+| Quality | 40% | How close to validator's baseline |
 | Freshness | 20% | Data sources are current |
+| Response Time | 10% | Speed of response |
+
+### Route Scoring
+
+Miners submit their 2 best routes. Each is scored separately, then combined:
+
+```
+Route 1 score = 75% of its component score
+Route 2 score = 25% of its component score
+
+Total score = Route 1 + Route 2
+```
+
+A route only earns points if it matches the baseline. A bad second route gets 0 × 25% = 0.
 
 ### Emission Distribution
 
 ```
-miner_score = (0.35 × feasibility) + (0.45 × quality) + (0.20 × freshness)
+miner_score = (0.30 × feasibility) + (0.40 × quality) + (0.20 × freshness) + (0.10 × response_time)
 miner_emission = (miner_score / sum(all_miner_scores)) × block_emission
 ```
 
@@ -29,6 +43,7 @@ miner_emission = (miner_score / sum(all_miner_scores)) × block_emission
 - **Feasibility** — routes must actually work (schedules exist, connections valid)
 - **Quality** — routes close to validator's baseline
 - **Freshness** — using current data, not stale caches
+- **Response Time** — faster responses earn more
 
 ### Validator Incentives
 
@@ -52,23 +67,9 @@ miner_emission = (miner_score / sum(all_miner_scores)) × block_emission
 |--------|---------|
 | Memorize common routes | 60% synthetic challenges (infinite variety) |
 | Fabricate data | Query hash verification (validators can replay) |
-| Copy top miner | PMU collapse (similar solutions get reduced scores) |
 | Submit impossible routes | Feasibility check (schedules must exist) |
 | Submit stale data | Freshness check (timestamp + hash verification) |
-
-### PMU (Pareto-Maximal Update)
-
-Similar solutions collapse to prevent copycat mining:
-
-```python
-def apply_pmu(scores, routes):
-    adjusted = scores.copy()
-    for i, r1 in enumerate(routes):
-        for j, r2 in enumerate(routes):
-            if i != j and routes_similar(r1, r2):
-                adjusted[i] *= 0.95
-    return adjusted
-```
+| Submit late | Response must be within deadline (0 if late) |
 
 ---
 
@@ -110,7 +111,7 @@ For each miner:
 1. Query data sources (schedules, pricing, conditions)
 2. Generate candidate routes
 3. Rank by priority (cost / time / reliability)
-4. Submit routes + data proofs (query hashes + timestamps)
+4. Submit 2 best routes + data proofs (query hashes + timestamps)
 ```
 
 ### Validation
@@ -118,19 +119,32 @@ For each miner:
 ```
 For each response:
 1. Check feasibility — do schedules exist?
-2. Score quality — compare route to validator's baseline
+2. Score quality — compare each route to validator's baseline
 3. Verify freshness — timestamp recent? query hash valid?
-4. Apply PMU collapse
+4. Score response time — proportional to deadline
 ```
 
 ### Scoring
 
 ```
-feasibility = 1.0 if all schedules exist, else 0.0
-quality = distance_to_baseline(miner_route, validator_baseline)
-freshness = 1.0 if query_hash valid + timestamp < 24h, else 0.0
+Component score = (0.30 × feasibility) + (0.40 × quality) + (0.20 × freshness) + (0.10 × response_time)
 
-score = (0.35 × feasibility) + (0.45 × quality) + (0.20 × freshness)
+Route 1 final = 0.75 × component_score
+Route 2 final = 0.25 × component_score
+
+Miner total = Route 1 + Route 2
+```
+
+### Quality Scoring
+
+```python
+def quality_score(miner_route, baseline_route):
+    cost_score = min(baseline_route.cost / miner_route.cost, 1.0)
+    time_score = min(baseline_route.time / miner_route.time, 1.0)
+    rel_score = min(miner_route.reliability / baseline_route.reliability, 1.0)
+    
+    # Default: cost 40%, time 35%, reliability 25%
+    return (0.40 × cost_score) + (0.35 × time_score) + (0.25 × rel_score)
 ```
 
 ### Reward Allocation
