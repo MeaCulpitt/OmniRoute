@@ -36,7 +36,6 @@
 
 - Integrate with existing freight platforms
 - White-label API for logistics companies
-- Embed routing in existing tools
 
 ### 3. Developer Ecosystem
 
@@ -58,18 +57,15 @@
 
 - **Launch emissions bonus** — Extra TAO for early miners
 - **Corridor rewards** — Bonus for covering underrepresented routes
-- **API credits** — Free data access for top performers
 
 ### For Validators
 
 - **Stake bonus** — Extra emissions for early validators
-- **Leaderboard** — Public recognition for top validators
 
 ### For Shippers
 
 - **Free pilot queries** — First 1000 queries free
 - **Volume discounts** — Low pricing for early adopters
-- **Priority support** — Direct access to team
 
 ---
 
@@ -84,7 +80,7 @@
 ### Month 4-6: Real Traffic
 
 1. Launch public API
-2. Onboard pilot shippers (freight forwarders)
+2. Onboard pilot shippers
 3. Generate real challenges + queries
 
 ### Month 7-12: Scale
@@ -106,20 +102,4 @@
 
 ---
 
-## Competition
-
-No direct Bittensor competitors in freight routing.
-
-**Adjacent competitors:**
-- Flexport (not just routing)
-- SAP TM (enterprise only)
-- Routing APIs (not decentralized)
-
-**Our edge:**
-- Decentralized = cheaper
-- Competition = better routes
-- No contracts = accessible
-
----
-
-*Get miners, get validators, get shippers. Simple.*
+*Get miners, get validators, get shippers.*
