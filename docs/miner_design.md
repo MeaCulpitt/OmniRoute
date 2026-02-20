@@ -79,63 +79,24 @@ Miners are route optimizers. They:
 
 | Type | Frequency | Description |
 |------|-----------|-------------|
-| Synthetic | 60% | Procedurally generated (random origins/destinations/constraints) |
+| Synthetic | 60% | Procedurally generated |
 | Real | 30% | Actual shipper queries |
-| Edge Cases | 10% | Unusual routes, remote ports, weird cargo |
-
----
-
-## Data Sources
-
-Miners query external APIs for:
-
-| Data Type | Examples |
-|-----------|----------|
-| Sea schedules | MarineTraffic, VesselFinder |
-| Rail schedules | China Railway Express, DB Cargo |
-| Air cargo | IATA CASS, carrier APIs |
-| Port status | PortWatch, Xeneta |
-| Weather | NOAA, Windy |
-
----
-
-## Data Proofs
-
-Every query includes proof:
-
-```python
-{
-    "provider": "MarineTraffic",
-    "query_hash": "0x7a3f...",      # Hash of request params
-    "timestamp": "2026-02-20T10:00:00Z"
-}
-```
-
-Validators verify:
-- Timestamp is recent (<24h)
-- Query can be replayed to match hash
+| Edge Cases | 10% | Unusual routes |
 
 ---
 
 ## Scoring
 
-Each route is scored on all 4 components, then combined:
+Each route scored on 4 components. Then:
 
 ```
-Route 1 = 75% of its component score
-Route 2 = 25% of its component score
+Route 1 = 75% of its score
+Route 2 = 25% of its score
 
 Total = Route 1 + Route 2
 ```
 
-### Example
-
-| Route | Feasibility | Quality | Freshness | Response | Raw Score | Weighted |
-|-------|------------|---------|-----------|----------|-----------|----------|
-| 1 | 1.0 | 0.90 | 1.0 | 0.70 | 0.92 | 0.69 |
-| 2 | 1.0 | 0.70 | 0.8 | 0.70 | 0.80 | 0.20 |
-
-**Total: 0.89**
+**Feasibility gate:** If Feasibility = 0, total = 0.
 
 ---
 
@@ -159,4 +120,4 @@ Total = Route 1 + Route 2
 
 ---
 
-*Focus on solving the routing problem. The benchmark rewards quality, not memorization.*
+*Focus on solving the routing problem. The benchmark rewards quality.*
