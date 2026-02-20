@@ -26,20 +26,20 @@ Current solutions are either expensive enterprise software (SAP, Oracle) or manu
 │                     OMNIROUTE PIPELINE                           │
 ├─────────────────────────────────────────────────────────────────┤
 │  1. REQUEST         Origin, destination, cargo, constraints      │
-│                     "40ft container, Shanghai → Rotterdam,       │
-│                      arrive by March 15, minimize cost"          │
+│                     "40ft container, Shanghai → Rotterdam,      │
+│                      arrive by March 15, minimize cost"         │
 ├─────────────────────────────────────────────────────────────────┤
-│  2. DATA INGESTION  Miners pull schedules, weather, port status  │
+│  2. DATA INGESTION  Miners pull schedules, weather, port status│
 │                     Public APIs + Bittensor subnets where useful │
 ├─────────────────────────────────────────────────────────────────┤
-│  3. OPTIMIZATION    Miners compute candidate routes              │
-│                     Balance cost, time, reliability, carbon      │
+│  3. OPTIMIZATION    Miners compute candidate routes             │
+│                     Balance cost, time, reliability             │
 ├─────────────────────────────────────────────────────────────────┤
-│  4. SUBMISSION      Ranked route options with breakdowns         │
-│                     Each leg: carrier, schedule, estimated cost  │
+│  4. SUBMISSION      2 best routes with breakdowns              │
+│                     Each leg: carrier, schedule, cost            │
 ├─────────────────────────────────────────────────────────────────┤
-│  5. VALIDATION      Validators score against baseline + verify   │
-│                     data sources                                 │
+│  5. VALIDATION      Validators score against baseline          │
+│                     Verify data sources                        │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -57,8 +57,7 @@ Current solutions are either expensive enterprise software (SAP, Oracle) or manu
   "cargo": {"type": "container", "size": "40ft", "weight_kg": 18000},
   "constraints": {
     "arrive_by": "2026-03-15",
-    "priority": "cost",
-    "avoid": ["transhipment_colombo"]
+    "priority": "cost"
   }
 }
 ```
@@ -72,13 +71,12 @@ Current solutions are either expensive enterprise software (SAP, Oracle) or manu
     {
       "rank": 1,
       "legs": [
-        {"mode": "sea", "carrier": "Maersk", "vessel": "Madison Maersk", 
-         "depart": "CNSHA 2026-02-18", "arrive": "NLRTM 2026-03-08",
-         "route": "Shanghai → Singapore → Suez → Rotterdam"},
-        {"mode": "truck", "carrier": "Local drayage", 
+        {"mode": "sea", "carrier": "Maersk", "vessel": "Madison Maersk",
+         "depart": "CNSHA 2026-02-18", "arrive": "NLRTM 2026-03-08"},
+        {"mode": "truck", "carrier": "Local drayage",
          "depart": "NLRTM 2026-03-08", "arrive": "Warehouse 2026-03-09"}
       ],
-      "totals": {"days": 19, "cost_usd": 2850, "reliability": 0.94, "co2_kg": 890}
+      "totals": {"days": 19, "cost_usd": 2850, "reliability": 0.94}
     },
     {
       "rank": 2,
@@ -88,28 +86,16 @@ Current solutions are either expensive enterprise software (SAP, Oracle) or manu
         {"mode": "truck", "carrier": "DB Schenker",
          "depart": "Duisburg 2026-03-05", "arrive": "Rotterdam 2026-03-06"}
       ],
-      "totals": {"days": 14, "cost_usd": 4200, "reliability": 0.88, "co2_kg": 420}
-    },
-    {
-      "rank": 3,
-      "legs": [
-        {"mode": "air", "carrier": "Emirates SkyCargo",
-         "depart": "PVG 2026-02-16", "arrive": "AMS 2026-02-17"},
-        {"mode": "truck", "carrier": "Local",
-         "depart": "AMS 2026-02-17", "arrive": "Rotterdam 2026-02-17"}
-      ],
-      "totals": {"days": 2, "cost_usd": 12500, "reliability": 0.97, "co2_kg": 4200}
+      "totals": {"days": 14, "cost_usd": 4200, "reliability": 0.88}
     }
   ],
-  "data_sources": {
-    "schedules": "MarineTraffic API (hash: 0x7a3f...)",
-    "weather": "SN18 Zeus (hash: 0x8b4e...)",
-    "port_congestion": "PortWatch public feed"
-  }
+  "data_proofs": [
+    {"provider": "MarineTraffic", "query_hash": "0x7a3f...", "timestamp": "2026-02-20T10:00:00Z"}
+  ]
 }
 ```
 
-**What the shipper gets:** Three options ranked by their stated priority (cost). Clear tradeoffs. Actionable.
+**What the shipper gets:** Two options ranked by priority (cost). Clear tradeoffs. Actionable.
 
 ---
 
@@ -126,8 +112,6 @@ OmniRoute uses a mix of public APIs and Bittensor subnets:
 | Air cargo | IATA, carrier APIs | Rates and availability |
 | Road/last-mile | Google Maps, HERE | Drayage estimates |
 
-**Bittensor integration is optional, not required.** Miners use whatever sources give them an edge. If SN18 provides better weather data than public APIs, miners will use it. Market forces, not mandates.
-
 ---
 
 ## Scoring
@@ -136,21 +120,21 @@ Validators evaluate miner responses on:
 
 | Component | Weight | Measurement |
 |-----------|--------|-------------|
-| Feasibility | 30% | Routes are physically possible (schedules exist, connections work) |
-| Optimality | 25% | How close to Pareto frontier on cost/time/reliability |
-| Data freshness | 20% | Sources are current (not stale schedules) |
-| Constraint satisfaction | 15% | Meets stated requirements (arrive_by, avoid, etc.) |
-| Response time | 10% | Faster is better, within reason |
+| Feasibility | 30% | Routes are physically possible |
+| Quality | 40% | How close to validator's baseline |
+| Freshness | 20% | Data sources are current |
+| Response Time | 10% | Faster is better |
 
-### Verification Method
+### Route Scoring
 
-Validators maintain their own baseline optimizer using the same public data sources. They:
+Miners submit their 2 best routes:
 
-1. Run the same request through their baseline
-2. Verify miner's claimed schedules exist (spot-check against APIs)
-3. Score miner routes relative to baseline + feasibility checks
+```
+Route 1 = 75% of its score
+Route 2 = 25% of its score
 
-This is **reproducible verification** — not subjective judgment.
+Total = Route 1 + Route 2
+```
 
 ---
 
@@ -159,21 +143,17 @@ This is **reproducible verification** — not subjective judgment.
 | Document | Description |
 |----------|-------------|
 | [Incentive Mechanism](./docs/mechanism_design.md) | Scoring formulas and emission logic |
-| [Miner Architecture](./docs/miner_design.md) | Data pipelines and optimization approaches |
-| [Validator Architecture](./docs/validator_design.md) | Verification methods and consensus |
-| [Business Rationale](./docs/business_logic.md) | Market opportunity and revenue model |
-| [Go-To-Market](./docs/go_to_market.md) | Target customers and growth strategy |
+| [Miner Architecture](./docs/miner_design.md) | Data pipelines and optimization |
+| [Validator Architecture](./docs/validator_design.md) | Verification methods |
+| [Business Rationale](./docs/business_logic.md) | Market opportunity |
+| [Go-To-Market](./docs/go_to_market.md) | Growth strategy |
 
 ---
 
 ## For Shippers
 
-Query OmniRoute via API:
-
 ```python
 from omniroute import Client
-
-client = Client(api_key="...")
 
 routes = client.optimize(
     origin="CNSHA",
@@ -182,7 +162,7 @@ routes = client.optimize(
     constraints={"arrive_by": "2026-03-15", "priority": "cost"}
 )
 
-print(routes[0].totals)  # {'days': 19, 'cost_usd': 2850, ...}
+print(routes[0].totals)  # {'days': 19, 'cost_usd': 2850}
 ```
 
 Pay per query. No staking required.
@@ -191,28 +171,27 @@ Pay per query. No staking required.
 
 ## For Miners
 
-Earn TAO by:
-1. Building effective route optimization engines
-2. Maintaining fresh data source integrations
-3. Responding quickly with feasible, high-quality routes
+Earn TAO by finding better routes:
+- Feasible routes (schedules exist)
+- High quality (close to baseline)
+- Fresh data (current schedules)
+- Fast response
 
-Better routes = higher scores = more emissions.
-
-Hardware requirements are modest — this is data processing, not GPU compute.
+70% of emissions go to miners.
 
 ---
 
 ## For Validators
 
 Earn dividends by:
-1. Running baseline optimization for comparison
-2. Verifying miner data sources
-3. Maintaining scoring consensus
+- Running baseline optimization
+- Verifying miner data sources
+- Accurate scoring
+
+30% of emissions go to validators.
 
 ---
 
 ## License
 
 MIT
-
----
