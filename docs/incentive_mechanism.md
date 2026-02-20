@@ -139,12 +139,19 @@ Miner total = Route 1 + Route 2
 
 ```python
 def quality_score(miner_route, baseline_route):
+    # Cost: lower is better
     cost_score = min(baseline_route.cost / miner_route.cost, 1.0)
+    
+    # Time: lower is better
     time_score = min(baseline_route.time / miner_route.time, 1.0)
+    
+    # Reliability: higher is better
     rel_score = min(miner_route.reliability / baseline_route.reliability, 1.0)
     
-    # Default: cost 40%, time 35%, reliability 25%
-    return (0.40 × cost_score) + (0.35 × time_score) + (0.25 × rel_score)
+    # Weighted equally: cost 40%, time 35%, reliability 25%
+    quality = (0.40 × cost_score) + (0.35 × time_score) + (0.25 × rel_score)
+    
+    return quality
 ```
 
 ### Reward Allocation
