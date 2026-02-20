@@ -46,20 +46,8 @@ Validators evaluate miner submissions:
   "challenge_id": "ch_8k2m9",
   "miner_uid": 42,
   "scores": {
-    "route_1": {
-      "feasibility": 1.0,
-      "quality": 0.90,
-      "freshness": 1.0,
-      "response_time": 0.72,
-      "raw_score": 0.94
-    },
-    "route_2": {
-      "feasibility": 1.0,
-      "quality": 0.70,
-      "freshness": 0.8,
-      "response_time": 0.72,
-      "raw_score": 0.80
-    },
+    "route_1": {"feasibility": 1.0, "quality": 0.90, "freshness": 1.0, "response_time": 0.72},
+    "route_2": {"feasibility": 1.0, "quality": 0.70, "freshness": 0.8, "response_time": 0.72},
     "total_score": 0.855
   }
 }
@@ -75,6 +63,8 @@ Validators evaluate miner submissions:
 | Quality | 40% | Compare to baseline (cost, time, reliability) |
 | Freshness | 20% | Verify query hashes and timestamps |
 | Response Time | 10% | Proportional to deadline |
+
+**Feasibility gate:** If Feasibility = 0, total score = 0.
 
 ---
 
@@ -119,5 +109,7 @@ def compute_baseline(challenge):
 ## Validator Incentives
 
 - **Stake-based emissions** — More TAO staked = more emissions
-- **Better baselines** — Better algorithms = more accurate scoring = more trust
-- **Market weeds out** — Poor validators lose stake to better ones
+- **Better baselines** — Better algorithms = more accurate scoring
+- **Market removes poor validators** — Delegators leave bad validators
+
+---
