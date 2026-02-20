@@ -1,323 +1,125 @@
 # OmniRoute: Go-To-Market Strategy
 
-OmniRoute launches as a B2B API for freight route optimization. The GTM strategy targets freight forwarders first (they have routing needs and technical capability), then expands to direct shippers.
+---
+
+## Initial Target Users
+
+### Phase 1: Freight Forwarders
+
+- Small to mid-size freight forwarders
+- Don't have enterprise TMS software
+- Currently rely on manual routing or basic tools
+- Need better routes but can't afford enterprise pricing
+
+### Phase 2: E-commerce Companies
+
+- Ship internationally regularly
+- Not big enough for dedicated logistics teams
+- Want better rates, don't want to manage forwarders
+
+### Phase 3: Any Shipper
+
+- Eventually open to anyone
+- API-first approach
 
 ---
 
-## Phase 1: Freight Forwarder Pilots (Months 1-3)
+## Distribution Channels
 
-### Why Forwarders First
+### 1. Direct Sales
 
-| Segment | Routing Volume | Technical Capability | Decision Speed |
-|---------|----------------|----------------------|----------------|
-| Freight forwarders | High (route daily) | Have dev teams | Fast |
-| Mid-size shippers | Medium | Limited tech | Medium |
-| Enterprise shippers | High | Complex procurement | Slow |
+- Target freight forwarders in port cities (Shanghai, Rotterdam, LA, Singapore)
+- Cold outreach + demo
+- Pilot programs
 
-Forwarders are ideal first customers:
-- They optimize routes constantly
-- They have API integration capability
-- They can measure value immediately
-- Successful forwarders become distribution channel to their shipper clients
+### 2. Partner Integrations
 
-### Target Profile
+- Integrate with existing freight platforms
+- White-label API for logistics companies
+- Embed routing in existing tools
 
-**Ideal early customer:**
-- 10-50 employees
-- 500-5,000 shipments/year
-- No enterprise TMS
-- Tech-forward (uses digital tools)
-- Focus on specific corridors (Asia-Europe, Transpacific)
+### 3. Developer Ecosystem
 
-**Examples:** Niche digital forwarders, regional specialists, new market entrants.
+- Public API documentation
+- SDKs in Python, JavaScript, Go
+- Developer community building
 
-### Outreach Strategy
+### 4. Content Marketing
 
-**Direct contact:**
-- LinkedIn outreach to operations leads
-- Freight industry Slack/Discord communities
-- Trade publication coverage (FreightWaves, The Loadstar)
-
-**Value proposition:**
-> "Route optimization that used to require enterprise software. Pay per query. No contracts."
-
-### Pilot Structure
-
-| Element | Details |
-|---------|---------|
-| Duration | 30 days |
-| Queries | 100 free |
-| Support | Direct Slack channel |
-| Success metric | Used 50+ queries, positive feedback |
-
-### Phase 1 Goals
-
-- 10 forwarder pilots
-- 5 convert to paying
-- Testimonials for marketing
+- Blog posts on route optimization
+- Case studies with pilot customers
+- Industry conference talks
 
 ---
 
-## Phase 2: API Launch & Pricing (Months 3-6)
+## Early Incentives
 
-### Public API
+### For Miners
 
-```
-POST api.omniroute.io/v1/optimize
-Authorization: Bearer {api_key}
+- **Launch emissions bonus** — Extra TAO for early miners
+- **Corridor rewards** — Bonus for covering underrepresented routes
+- **API credits** — Free data access for top performers
 
-{
-  "origin": "CNSHA",
-  "destination": "NLRTM",
-  "cargo": {"type": "container", "size": "40ft"},
-  "constraints": {"arrive_by": "2026-03-15", "priority": "cost"}
-}
-```
+### For Validators
 
-Response: Ranked route options with cost/time/reliability.
+- **Stake bonus** — Extra emissions for early validators
+- **Leaderboard** — Public recognition for top validators
 
-### Pricing
+### For Shippers
 
-| Tier | Price | Included |
-|------|-------|----------|
-| Free | $0 | 10 queries/month, rate-limited |
-| Starter | $49/month | 100 queries |
-| Professional | $199/month | 500 queries |
-| Business | $499/month | 2,000 queries |
-| Enterprise | Custom | Unlimited, SLA, support |
-
-**Pay-as-you-go:** $1.50/query after plan limit.
-
-### Payment
-
-- Fiat (Stripe): Credit card, invoicing for enterprise
-- Crypto (optional): TAO, USDC at 10% discount
-
-**No staking required.** Crypto-native pricing creates adoption friction. Offer it as a discount, not a requirement.
-
-### Phase 2 Goals
-
-- 50 paying customers
-- $10K MRR
-- <5% churn
+- **Free pilot queries** — First 1000 queries free
+- **Volume discounts** — Low pricing for early adopters
+- **Priority support** — Direct access to team
 
 ---
 
-## Phase 3: Corridor Specialization (Months 6-9)
+## Bootstrapping Strategy
 
-### Focus Corridors
+### Month 1-3: Build the Network
 
-Miners naturally specialize. Market this:
+1. Onboard 5-10 miners
+2. Onboard 3-5 validators
+3. Run internal testing with synthetic challenges
 
-| Corridor | Volume | Specialization Value |
-|----------|--------|----------------------|
-| China → Europe | Highest | Rail vs sea tradeoffs, Suez alternatives |
-| Transpacific | High | West Coast port congestion, schedule reliability |
-| Intra-Asia | Growing | Transshipment optimization |
-| South America → Asia | Underserved | Limited direct options, complex routing |
+### Month 4-6: Real Traffic
 
-### Corridor Landing Pages
+1. Launch public API
+2. Onboard pilot shippers (freight forwarders)
+3. Generate real challenges + queries
 
-```
-omniroute.io/asia-europe
-omniroute.io/transpacific
-omniroute.io/intra-asia
-```
+### Month 7-12: Scale
 
-Each page:
-- Corridor-specific worked examples
-- Current conditions (port delays, schedule changes)
-- Testimonials from corridor specialists
-
-### Miner Incentives
-
-Bonus emissions for underserved corridors:
-- South America routes: 1.2x multiplier
-- Africa routes: 1.3x multiplier
-- New corridor coverage: Discovery bonus
+1. Expand miner network
+2. Add more shippers
+3. Build developer community
 
 ---
 
-## Phase 4: Platform Integrations (Months 9-12)
+## Key Metrics
 
-### Target Platforms
-
-| Platform Type | Examples | Integration Value |
-|---------------|----------|-------------------|
-| TMS (mid-market) | Cargowise, Descartes | Embedded optimization |
-| Freight marketplaces | Freightos, Shifl | Route suggestions |
-| Visibility platforms | Project44, FourKites | Predictive routing |
-
-### Integration Model
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    PLATFORM INTEGRATION                          │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  PLATFORM           OMNIROUTE            SHIPPER                 │
-│     │                   │                    │                   │
-│     │── Request ───────▶│                    │                   │
-│     │                   │── Optimize ───────▶│                   │
-│     │◀── Routes ────────│                    │                   │
-│     │                   │                    │                   │
-│     │─────────── Display in platform UI ────▶│                   │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**Revenue share:** Platform pays wholesale ($0.75/query), marks up to users.
-
-### Phase 4 Goals
-
-- 2-3 platform integrations
-- 50% of queries via platforms
-- $50K MRR
+| Metric | Target (Month 6) | Target (Month 12) |
+|--------|-----------------|------------------|
+| Miners | 20 | 100 |
+| Validators | 10 | 50 |
+| Daily queries | 1,000 | 100,000 |
+| Active shippers | 10 | 500 |
 
 ---
 
-## Marketing Channels
+## Competition
 
-### Content Marketing
+No direct Bittensor competitors in freight routing.
 
-| Content Type | Frequency | Purpose |
-|--------------|-----------|---------|
-| Route corridor reports | Monthly | SEO, thought leadership |
-| Disruption alerts | As needed | Relevance, email list |
-| Case studies | Quarterly | Social proof |
-| API tutorials | Ongoing | Developer adoption |
+**Adjacent competitors:**
+- Flexport (not just routing)
+- SAP TM (enterprise only)
+- Routing APIs (not decentralized)
 
-**Example content:**
-- "Shanghai-Rotterdam: Rail vs Sea in Q1 2026"
-- "Suez Congestion: Alternative Routes Analysis"
-- "How [Forwarder] Cut Transit Time 3 Days with OmniRoute"
-
-### Industry Presence
-
-| Channel | Approach |
-|---------|----------|
-| FreightWaves | Guest articles, podcast |
-| The Loadstar | News coverage |
-| LinkedIn | Operations/logistics audience |
-| Freight conferences | Sponsor small events initially |
-
-### Developer Marketing
-
-| Channel | Approach |
-|---------|----------|
-| GitHub | Open-source SDK, examples |
-| Dev.to / Medium | Technical tutorials |
-| Hacker News | Launch announcement |
-| API directories | RapidAPI, ProgrammableWeb |
+**Our edge:**
+- Decentralized = cheaper
+- Competition = better routes
+- No contracts = accessible
 
 ---
 
-## Sales Process
-
-### Self-Serve (Starter/Professional)
-
-1. Sign up on website
-2. Get API key
-3. Free tier (10 queries)
-4. Upgrade when ready
-
-**Conversion funnel:**
-- Landing page → Sign up: 5%
-- Sign up → First query: 60%
-- First query → Paid: 20%
-
-### Sales-Assisted (Business/Enterprise)
-
-1. Demo request form
-2. 30-minute call
-3. Pilot (100 free queries)
-4. Contract negotiation
-5. Onboarding
-
-**Target:** Companies with 500+ shipments/year.
-
----
-
-## Competitive Positioning
-
-### Message
-
-**For freight forwarders:**
-> "Optimize every shipment without enterprise software costs. API-first route intelligence."
-
-**For shippers:**
-> "Know your options before you book. Real-time multi-modal route comparison."
-
-**For platforms:**
-> "Add route optimization to your product. White-label API, revenue share."
-
-### Differentiation
-
-| Competitor Says | OmniRoute Says |
-|-----------------|----------------|
-| "Enterprise-grade TMS" | "Pay per query, no contracts" |
-| "Full-service forwarding" | "Just the intelligence—use any forwarder" |
-| "AI-powered optimization" | "Competing algorithms, verifiable quality" |
-
----
-
-## Success Metrics
-
-### Phase 1 (Months 1-3)
-
-| Metric | Target |
-|--------|--------|
-| Pilot customers | 10 |
-| Queries processed | 1,000 |
-| Pilot → paid conversion | 50% |
-
-### Phase 2 (Months 3-6)
-
-| Metric | Target |
-|--------|--------|
-| Paying customers | 50 |
-| MRR | $10K |
-| Queries/month | 5,000 |
-
-### Phase 3 (Months 6-9)
-
-| Metric | Target |
-|--------|--------|
-| Paying customers | 150 |
-| MRR | $30K |
-| Corridor coverage | 10 major lanes |
-
-### Phase 4 (Months 9-12)
-
-| Metric | Target |
-|--------|--------|
-| Platform integrations | 3 |
-| MRR | $50K |
-| Queries/month | 50,000 |
-
----
-
-## Risks & Mitigations
-
-| Risk | Mitigation |
-|------|------------|
-| Low initial query quality | Extensive pilot testing before public launch |
-| Slow forwarder adoption | Generous free tier, direct sales support |
-| Platform integration delays | Prioritize self-serve growth in parallel |
-| Price sensitivity | Demonstrate ROI clearly (savings > cost) |
-
----
-
-## Summary
-
-**Months 1-3:** Freight forwarder pilots. Prove quality. Get testimonials.
-
-**Months 3-6:** Public API launch. Self-serve pricing. First revenue.
-
-**Months 6-9:** Corridor specialization. Content marketing. Scale customers.
-
-**Months 9-12:** Platform integrations. Revenue share. Distribution leverage.
-
-Start narrow (forwarders), prove value, expand.
-
----
+*Get miners, get validators, get shippers. Simple.*
