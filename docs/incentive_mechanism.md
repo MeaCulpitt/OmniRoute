@@ -24,7 +24,7 @@ Route 2 score = 25% of its component score
 Total score = Route 1 + Route 2
 ```
 
-A route only earns points if it matches the baseline. A bad second route gets 0 × 25% = 0.
+A route only earns points if it matches the baseline. A bad route gets 0.
 
 ### Emission Distribution
 
