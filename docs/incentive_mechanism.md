@@ -24,12 +24,15 @@ Route 2 score = 25% of its component score
 Total score = Route 1 + Route 2
 ```
 
-A route only earns points if it matches the baseline. A bad route gets 0.
+**Feasibility gate:** If Feasibility = 0, total score = 0. A route that doesn't exist gets nothing.
 
 ### Emission Distribution
 
 ```
 miner_score = (0.30 × feasibility) + (0.40 × quality) + (0.20 × freshness) + (0.10 × response_time)
+
+# If feasibility == 0: miner_score = 0
+
 miner_emission = (miner_score / sum(all_miner_scores)) × block_emission
 ```
 
@@ -67,7 +70,7 @@ miner_emission = (miner_score / sum(all_miner_scores)) × block_emission
 |--------|---------|
 | Memorize common routes | 60% synthetic challenges (infinite variety) |
 | Fabricate data | Query hash verification (validators can replay) |
-| Submit impossible routes | Feasibility check (schedules must exist) |
+| Submit impossible routes | Feasibility check (0 = total score 0) |
 | Submit stale data | Freshness check (timestamp + hash verification) |
 | Submit late | Response must be within deadline (0 if late) |
 
@@ -119,6 +122,7 @@ For each miner:
 ```
 For each response:
 1. Check feasibility — do schedules exist?
+   → If 0: total_score = 0
 2. Score quality — compare each route to validator's baseline
 3. Verify freshness — timestamp recent? query hash valid?
 4. Score response time — proportional to deadline
@@ -127,7 +131,9 @@ For each response:
 ### Scoring
 
 ```
-Component score = (0.30 × feasibility) + (0.40 × quality) + (0.20 × freshness) + (0.10 × response_time)
+component_score = (0.30 × feasibility) + (0.40 × quality) + (0.20 × freshness) + (0.10 × response_time)
+
+# If feasibility == 0: component_score = 0
 
 Route 1 final = 0.75 × component_score
 Route 2 final = 0.25 × component_score
@@ -138,20 +144,13 @@ Miner total = Route 1 + Route 2
 ### Quality Scoring
 
 ```python
-def quality_score(miner_route, baseline_route):
-    # Cost: lower is better
-    cost_score = min(baseline_route.cost / miner_route.cost, 1.0)
+def quality_score(miner_route, baseline):
+    cost_score = min(baseline.cost / miner_route.cost, 1.0)
+    time_score = min(baseline.time / miner_route.time, 1.0)
+    rel_score = min(miner_route.reliability / baseline.reliability, 1.0)
     
-    # Time: lower is better
-    time_score = min(baseline_route.time / miner_route.time, 1.0)
-    
-    # Reliability: higher is better
-    rel_score = min(miner_route.reliability / baseline_route.reliability, 1.0)
-    
-    # Weighted equally: cost 40%, time 35%, reliability 25%
-    quality = (0.40 × cost_score) + (0.35 × time_score) + (0.25 × rel_score)
-    
-    return quality
+    # Weighted: cost 40%, time 35%, reliability 25%
+    return (0.40 × cost_score) + (0.35 × time_score) + (0.25 × rel_score)
 ```
 
 ### Reward Allocation
@@ -179,7 +178,7 @@ def validator_baseline(challenge):
 
 Miners are scored against this baseline. Over time:
 - Validators with better algorithms → more accurate scoring → higher trust
-- Market淘汰 validators with poor baselines
+- Market removes validators with poor baselines
 
 ---
 
