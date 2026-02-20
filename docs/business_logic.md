@@ -53,8 +53,6 @@ Each route is scored on:
 - **Freshness** — Is the data current?
 - **Response Time** — How fast did the miner respond?
 
-Miners compete to find the best routes. Validators ensure quality. The network produces better routes than any single optimizer could.
-
 ---
 
 ## Why Bittensor
@@ -62,9 +60,6 @@ Miners compete to find the best routes. Validators ensure quality. The network p
 ### 1. Competitive Optimization
 
 Miners compete to find better routes. Competition drives quality.
-
-Centralized: One algorithm, one team.
-Decentralized: Many miners, many approaches, best wins.
 
 ### 2. Data Freshness Incentives
 
@@ -80,7 +75,6 @@ One miner offline → others continue. Decentralized = resilient.
 |-------------|-------|----------------|
 | Miner | Maximize score | Routes are feasible, high-quality, fresh |
 | Validator | Accurate scoring | Correctly evaluating miners |
-| Shipper | Good routes | Validators ensure quality |
 
 ---
 
@@ -127,26 +121,6 @@ One miner offline → others continue. Decentralized = resilient.
 
 No direct competitor in freight routing.
 
-**Complementary:**
-- SN18 (weather) — route risk data
-- SN22 (search) — disruption detection
-
----
-
-## Defensibility
-
-### 1. Miner Expertise
-
-Over time, miners develop specialized optimization for different corridors. Knowledge compounds.
-
-### 2. Data Relationships
-
-Miners build API integrations with schedules, carriers, ports. Relationships are sticky.
-
-### 3. Network Effects
-
-More queries → more emissions → better optimization → more queries.
-
 ---
 
 ## Path to Adoption
@@ -155,19 +129,16 @@ More queries → more emissions → better optimization → more queries.
 
 - Launch with synthetic challenges
 - Establish baseline route quality
-- Onboard pilot shippers
 
 ### Phase 2: API (Months 3-6)
 
 - Public API with payment
-- Integration guides
-- First paying customers
+- Onboard pilot shippers
 
 ### Phase 3: Scale (Months 6-12)
 
 - Bulk pricing
-- Corridor specialization
-- Partner with freight platforms
+- Partner integrations
 
 ---
 
@@ -176,9 +147,8 @@ More queries → more emissions → better optimization → more queries.
 | Question | Answer |
 |----------|--------|
 | What problem? | Freight routing is expensive, complex, valuable |
-| Why Bittensor? | Competitive optimization, aligned incentives, no single point of failure |
+| Why Bittensor? | Competitive optimization, aligned incentives |
 | How revenue? | Pay-per-query ($1-3), 70/30 miners/validators |
-| Defensibility? | Miner expertise, data relationships, network effects |
 
 ---
 
